@@ -1,1 +1,1 @@
-# flask_website_template
+#A website template using Flask and MongoDB
