@@ -130,3 +130,6 @@ dmypy.json
 
 # Editor stuff
 .vscode
+
+# Secret stuff
+secrets.py
