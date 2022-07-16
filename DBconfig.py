@@ -1,6 +1,8 @@
 from dotenv import find_dotenv, load_dotenv
 from os import getenv
 import pymongo
+import json
+from bson import json_util
 
 place = find_dotenv()
 load_dotenv(place)
@@ -13,3 +15,7 @@ myclient = pymongo.MongoClient(
     f"mongodb+srv://{USER_NAME}:{PASSWORD}@{CLIENT}")
 mydb = myclient["mydatabase"]
 collection = mydb["customers"]
+
+
+def parse_json(data):
+    return json.loads(json_util.dumps(data))
