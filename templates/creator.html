@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}
+Trevo | criar evento
+{% endblock %}
+{% block content %}
+<nav style=" --bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+width='8' height='8' %3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'
+/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <strong>Criar evento</strong>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Informações gerais</li>
+    </ol>
+</nav>
+
+<form class="row g-3" action="{{ url_for('checkNewEvent1')}}" method="post">
+    <div class="col-12">
+        <label for="inputTitulo" class="form-label">Título do evento</label>
+        <input type="text" class="form-control" id="inputTitulo" name="inputTitulo" required>
+    </div>
+    <div class="col-12">
+        <label for="inputDescricao" class="form-label">Descrição</label>
+        <textarea type="text" class="form-control" id="inputDescricao" name="inputDescricao" rows="4"
+            required></textarea>
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputDescricao" class="form-label">Quando o resultado do evento será
+            publicado?</label>
+        <div class="row">
+            <div class="col-md-5 pt-2">
+                <input type="date" class="form-control" id="inputData" name="inputData" placeholder="Dia" required>
+            </div>
+            <div class="col-md-5 pt-2">
+                <input type="text" class="form-control" id="inputHora" name="inputHora" placeholder="Hora (opcional)">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label for="inputDescricao" class="form-label">Qual a categoria do evento?</label>
+        <div class="col-12 pt-2">
+            <select class="form-select" aria-label="Default select example" name="inputCategoria" required>
+                <option value="esportes">Esportes</option>
+                <option value="politica">Política</option>
+                <option value="entretenimento">Entretenimento</option>
+                <option value="outros">Outros</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col pt-2 align-self-end">
+        <button type="submit" class="btn btn-success">Avançar</button>
+    </div>
+
+</form>
+{% endblock %}

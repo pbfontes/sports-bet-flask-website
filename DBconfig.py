@@ -14,7 +14,8 @@ CLIENT = getenv("CLIENT")
 myclient = pymongo.MongoClient(
     f"mongodb+srv://{USER_NAME}:{PASSWORD}@{CLIENT}")
 mydb = myclient["mydatabase"]
-collection = mydb["customers"]
+collection_customers = mydb["customers"]
+collection_events = mydb["events"]
 
 
 def parse_json(data):

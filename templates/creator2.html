@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}
+Trevo | criar evento
+{% endblock %}
+{% block content %}
+<nav style=" --bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+width='8' height='8' %3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'
+/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <strong>Criar evento</strong>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Opções</li>
+    </ol>
+</nav>
+
+<form class="row g-3" action="/checkNewEvent2/{{event_id}}" method="post">
+
+    <div id="options">
+
+        <div class="row g-3 align-items-center pb-3 pt-2">
+            <div class="col-auto">
+                <label for="inputPassword6" class="col-form-label">Opção 1</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline"
+                    name="option1">
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-outline-danger" onclick="remove(this)">Remover</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-12">
+        <button type="button" class="btn btn-primary" id="addOption">Adicionar opção</button>
+    </div>
+
+    <div class="col-12 pt-2">
+        <button type="submit" class="btn btn-success">Criar</button>
+    </div>
+</form>
+
+<script>
+    var nOpcoes = 2
+
+    function reorderOptions(node) {
+        var counter = 1
+        const opcoes = node.children
+        for (let i = 0; i < opcoes.length; i++) {
+            opcoes[i].firstElementChild.firstElementChild.innerHTML = `Opção ${counter}`;
+            opcoes[i].childNodes[3].firstElementChild.name = `option${counter}`;
+            counter++;
+        }
+    }
+
+    function remove(el) {
+        var element = el;
+        var target = element.parentNode.parentNode
+        var parent = target.parentNode
+        target.remove();
+        reorderOptions(parent)
+        nOpcoes--;
+    }
+
+    $(document).ready(function () {
+
+        $("#addOption").click(function () {
+            var txt = `<div class="row g-3 align-items-center pb-3">
+                            <div class="col-auto">
+                                <label for="inputPassword6" class="col-form-label">Opção ${nOpcoes}</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="option${nOpcoes}">
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-outline-danger" onclick="remove(this)">Remover</button>
+                            </div>
+                        </div>`
+
+            $("#options").append(txt);
+            nOpcoes++;
+        });
+
+    });
+
+
+
+
+    // const parentDiv = document.createElement("div");
+    // parentDiv.className = "row g-3 align-items-center"
+
+
+</script>
+{% endblock %}
