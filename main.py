@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, request
 from DBconfig import collection_customers, collection_events, parse_json
 from bson.objectid import ObjectId
+from events_viewer import getEvents
 
 app = Flask(__name__)
 
@@ -62,7 +63,7 @@ def checkNewEvent2(event_id):
 
         collection_events.update_one(query, newValues)
 
-        return "sera que vai"
+        return redirect("/")
     return redirect("/criar_evento")
 
 
@@ -98,6 +99,11 @@ def checkUserSignUp():
 
         return user_data
     return redirect("/cadastro")
+
+
+@app.route("/showEvents/<filter>")
+def teste(filter):
+    return getEvents(filter)
 
 
 @app.route("/login")
