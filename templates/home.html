@@ -5,26 +5,29 @@ Trevo | eventos
 {% block content %}
 
 
-
 <!-- <div class="card mb-3 rounded-3">
     <div class="card-header">
         Featured
     </div>
     <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-</div>
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-lg-7 col-xxl-8">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+                <div class="col-lg-5 col-xxl-4">
+                    <div class="d-grid gap-2 d-lg-flex justify-content-lg-end">
+                        <button class="btn btn-secondary p-3 rounded-3" type="button">Time 1
+                            <br class="d-none d-lg-block">
+                            <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
+                            <strong>9.4</strong>
 
-<div class="card">
-    <div class="card-header">
-        Featured
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div> -->
 
@@ -47,11 +50,30 @@ Trevo | eventos
                                 ${event.categoria}
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">${event.titulo}</h5>
-                                <p class="card-text">${event.descricao}</p>
-                                <a href="#" class="btn btn-primary">Apostar</a>
-                            </div>
-                        </div>`
+                                <div class="container">
+                                    <div class="row g-3">
+                                        <div class="col-lg-7 col-xxl-8">
+                                            <h4 class="card-title">${event.titulo}</h4>
+                                            <p class="card-text">${event.descricao}</p>
+                                        </div>
+                                        <div class="col-lg-5 col-xxl-4">
+                                            <div class="d-grid gap-2 d-lg-flex justify-content-lg-end">`
+
+            for (let i = 0; i < 2; i++) {
+                content += `<button class="btn btn-secondary p-3 rounded-3" type="button">${event.opcoes[`option${i + 1}`]}
+                                <br class="d-none d-lg-block">
+                                <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
+                                <strong>9.4</strong>
+                            </button>`
+            }
+
+            content += ` </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`
+
         }
 
         console.log(this.responseText);
