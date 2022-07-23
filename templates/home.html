@@ -58,8 +58,8 @@ Trevo | eventos
                                         </div>
                                         <div class="col-lg-5 col-xxl-4">
                                             <div class="d-grid gap-2 d-lg-flex justify-content-lg-end">`
-
-            for (let i = 0; i < 2; i++) {
+            var nOptions = Object.keys(event.opcoes).length
+            for (let i = 0; i < nOptions; i++) {
                 content += `<button class="btn btn-secondary p-3 rounded-3" type="button">${event.opcoes[`option${i + 1}`]}
                                 <br class="d-none d-lg-block">
                                 <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
