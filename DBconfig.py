@@ -1,7 +1,7 @@
 from dotenv import find_dotenv, load_dotenv
 from os import getenv
 import pymongo
-import json
+from json import loads
 from bson import json_util
 
 place = find_dotenv()
@@ -19,4 +19,11 @@ collection_events = mydb["events"]
 
 
 def parse_json(data):
-    return json.loads(json_util.dumps(data))
+    return loads(json_util.dumps(data))
+
+
+def extract_valid_id(str_obj):
+    obj_id = str_obj.replace("'", '"')
+    obj_id = loads(obj_id)
+    obj_id = obj_id["$oid"]
+    return obj_id

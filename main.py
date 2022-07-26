@@ -3,11 +3,13 @@ from flask import Flask, redirect, render_template, request, url_for, abort
 from flask_bcrypt import Bcrypt
 from os import urandom
 from json import loads
+from datetime import datetime
 from flask_login import LoginManager, login_user, current_user, user_accessed, login_required, logout_user
-from DBconfig import collection_customers, collection_events, parse_json
+from DBconfig import collection_customers, collection_events, parse_json, extract_valid_id
 from bson.objectid import ObjectId
 from events_viewer import getEvents
 from user_model import User
+from odd_calculator import set_init_odd
 
 
 app = Flask(__name__)
@@ -22,9 +24,7 @@ app.secret_key = urandom(16)
 
 @login_manager.user_loader
 def load_user(obj_id):
-    user_id = obj_id.replace("'", '"')
-    user_id = loads(user_id)
-    user_id = user_id["$oid"]
+    user_id = extract_valid_id(obj_id)
     user = collection_customers.find_one({"_id": ObjectId(user_id)})
     user = parse_json(user)
     if not user:
@@ -62,7 +62,7 @@ def checkNewEvent1():
         event_data["dia"] = dia
         event_data["hora"] = hora
         event_data["categoria"] = categoria
-        event_data["usuario_criador"] = usuario
+        event_data["usuario_criador"] = ObjectId(extract_valid_id(usuario))
         event_data["status"] = "inativo"
 
         result = collection_events.insert_one(parse_json(event_data))
@@ -78,22 +78,23 @@ def checkNewEvent1():
 def criar_evento2(event_id):
     event = collection_events.find_one({"_id": ObjectId(event_id)})
     event = parse_json(event)
-    if event["usuario_criador"] == current_user.id and event["status"] == "inativo":
+    if str(event["usuario_criador"]) == current_user.id and event["status"] == "inativo":
         return render_template("creator2.html", event_id=event_id, event_name=event["titulo"])
-    return "pagina do evento"
+    return redirect(url_for("event_page", event_id=event_id))
 
 
 @ app.route("/checkNewEvent2/<event_id>", methods=["GET", "POST"])
 def checkNewEvent2(event_id):
     if request.method == "POST":
-        event_data = request.form.to_dict(flat=False)
+        new_event_data = request.form.to_dict(flat=False)
         db_event_data = dict()
-        odd_init = len(event_data.keys())
-        for option in event_data.keys():
-            opcao = event_data[option][0]
-            db_event_data[f"{opcao}"] = odd_init
+        nOpcoes = len(new_event_data.keys())
+        for option in new_event_data.keys():
+            opcao = new_event_data[option][0]
+            db_event_data[f"{opcao}"] = {
+                "odd": set_init_odd(nOpcoes), "aportes": []}
 
-        print(db_event_data)
+        # print(db_event_data)
 
         query = {"_id": ObjectId(event_id)}
         newValues = {"$set": {"opcoes": db_event_data, "status": "ativo"}}
@@ -192,16 +193,43 @@ def logout():
 
 @app.route("/visualizar_evento/<event_id>")
 def event_page(event_id):
+    event = collection_events.find_one({"_id": ObjectId(event_id)})
+    if event == None:
+        return redirect(url_for('home'))
     return render_template("event_page.html", event_id=event_id)
 
 
 @app.route("/get_event_data/<event_id>")
 def event_data(event_id):
     event = collection_events.find_one({"_id": ObjectId(event_id)})
-    if event == None:
-        return redirect(url_for('home'))
     event = parse_json(event)
     return event
+
+
+@app.route("/process_bet/<event_id>", methods=["GET", "POST"])
+@login_required
+def process_bet(event_id):
+    if request.method == "POST":
+
+        usuario = ObjectId(extract_valid_id(current_user.id))
+        valor = request.form.get("valor_apostado")
+        opcao = request.form.get("options")
+        horario = datetime.now()
+        odd_do_aporte = request.form.get("odd-da-compra")
+
+        bet_data = dict()
+        bet_data["usuario"] = usuario
+        bet_data["valor-aporte"] = float(valor)
+        bet_data["horario"] = horario
+        bet_data["odd-comprada"] = float(odd_do_aporte)
+
+        query = {"_id": ObjectId(event_id)}
+        newValues = {"$push": {f"opcoes.{opcao}.aportes": bet_data}}
+
+        collection_events.update_one(query, newValues)
+
+        return redirect(url_for("home"))
+    return redirect(url_for("home"))
 
 
 if __name__ == '__main__':

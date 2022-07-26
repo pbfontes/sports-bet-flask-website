@@ -13,7 +13,7 @@ Trevo | criar evento
     </div>
 
     <div class="col-sm-10">
-        <h3 class="ms-2" id="titulo-evento">Quem vence a eleição de 2022?</h3>
+        <h3 class="ms-2" id="titulo-evento"></h3>
     </div>
 
     <div class="col-sm-2">
@@ -25,11 +25,11 @@ Trevo | criar evento
 
 <div class="card mt-2 rounded-3">
     <div class="card-body">
-        <p class="text-secondary" id="descricao-evento"> Descrição aqui </p>
+        <p class="text-secondary" id="descricao-evento"></p>
     </div>
 </div>
 
-<form class="g-3 align-items-end mt-4" action="" method="post">
+<form class="g-3 align-items-end mt-4" action="/process_bet/{{event_id}}" method="post">
     <p class="ms-2">Selecione uma opção para apostar</p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-start" id="option_picker">
 
@@ -86,6 +86,7 @@ Trevo | criar evento
             </div>
         </div>
     </div>
+    <input type="hidden" id="odd-da-compra" name="odd-da-compra">
 
 </form>
 
@@ -108,20 +109,22 @@ Trevo | criar evento
         var nOptions = options.length
         var content = ""
         for (let i = 0; i < nOptions; i++) {
-            content += `<input type="radio" class="btn-check" name="options-outlined" id="success-outlined-${i}" autocomplete="off"
-                            onclick="selected_odd(this)">
+            content += `<input type="radio" class="btn-check" name="options" id="success-outlined-${i}" autocomplete="off"
+                            onclick="selected_odd(this)" value="${options[i]}">
                         <label class="btn btn-outline-success p-3" for="success-outlined-${i}">
                             ${options[i]}
                             <br class="d-none d-sm-block">
                             <span class="d-inline d-sm-none"> &nbsp; | &nbsp; </span>
-                            <strong id="oddValue${i}">${evento.opcoes[options[i]]}</strong>
+                            <strong id="oddValue${i}">${evento.opcoes[options[i]].odd}</strong>
                         </label>`
         }
         document.getElementById("option_picker").innerHTML = content
+        document.getElementById("success-outlined-0").checked = true
         document.getElementById("titulo-evento").innerHTML = evento.titulo
         document.getElementById("descricao-evento").innerHTML = evento.descricao
+        document.getElementById("odd-da-compra").value = evento.opcoes[options[0]].odd
 
-        odd = document.getElementById("oddValue0").innerText
+        odd = evento.opcoes[options[0]].odd
     }
 
     // Send a request
@@ -130,7 +133,8 @@ Trevo | criar evento
 
     function selected_odd(elemento) {
         label = elemento.nextElementSibling
-        odd = label.children[2].innerText
+        odd = parseFloat(label.children[2].innerText)
+        document.getElementById("odd-da-compra").value = odd
         valor = document.getElementById("valor_apostado").value
         calculator(valor)
     }
