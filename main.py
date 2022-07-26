@@ -133,7 +133,12 @@ def checkUserSignUp():
         user_data["senha"] = bcrypt.generate_password_hash(
             senha).decode('utf-8')
 
-        collection_customers.insert_one(parse_json(user_data))
+        user_id = collection_customers.insert_one(parse_json(user_data))
+
+        user_data["_id"] = ObjectId(user_id.inserted_id)
+        user = parse_json(user_data)
+        user = User(user_json=user)
+        login_user(user)
 
         return redirect(url_for('home'))
     return redirect("/cadastro")

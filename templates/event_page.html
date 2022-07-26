@@ -4,7 +4,99 @@ Trevo | criar evento
 {% endblock %}
 {% block content %}
 
+<div class="row justify-content-between mt-3">
+
+    <div class="col d-inline d-sm-none">
+        <div class="d-flex justify-content-start">
+            <a class="ms-2 mb-2 btn btn-success btn-sm rounded-3 fs-6 px-3">@trevo</a>
+        </div>
+    </div>
+
+    <div class="col-sm-10">
+        <h3 class="ms-2" id="titulo-evento">Quem vence a eleição de 2022?</h3>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-success btn-sm rounded-3 fs-6 px-3 d-none d-sm-block">@trevo</a>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-2 rounded-3">
+    <div class="card-body">
+        <p class="text-secondary" id="descricao-evento"> Descrição aqui </p>
+    </div>
+</div>
+
+<form class="g-3 align-items-end mt-4" action="" method="post">
+    <p class="ms-2">Selecione uma opção para apostar</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-start" id="option_picker">
+
+        <!-- <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off"
+        onclick="selected_odd(this)" checked>
+    <label class="btn btn-outline-success p-3" for="success-outlined">
+        Time 1
+        <br class="d-none d-sm-block">
+        <span class="d-inline d-sm-none"> &nbsp; | &nbsp; </span>
+        <strong id="oddValue1">9.4</strong>
+    </label> -->
+
+        <!-- <input type="radio" class="btn-check" name="options-outlined" id="success-outlined-2" onclick="selected_odd(this)"
+        autocomplete="off">
+    <label class="btn btn-outline-success p-3" for="success-outlined-2">
+        Time 2
+        <br class="d-none d-sm-block">
+        <span class="d-inline d-sm-none"> &nbsp; | &nbsp; </span>
+        <strong id="oddValue2">2.3</strong>
+    </label>
+
+    <input type="radio" class="btn-check" name="options-outlined" id="success-outlined-3" onclick="selected_odd(this)"
+        autocomplete="off">
+    <label class="btn btn-outline-success p-3" for="success-outlined-3">
+        Time 3
+        <br class="d-none d-sm-block">
+        <span class="d-inline d-sm-none"> &nbsp; | &nbsp; </span>
+        <strong id="oddValue3">4.7</strong>
+    </label> -->
+
+    </div>
+
+    <div class="row mt-4 align-items-end">
+
+
+        <div class="col-sm-3">
+            <label for="valor_apostado" class="form-label ms-4">Qual o valor?</label>
+            <div class="d-flex justify-content-start align-items-center">
+                <span class="pe-2">R$</span>
+                <input type="number" step="any" min="0.00" onchange="calculator(this.value)" class="form-control"
+                    id="valor_apostado" name="valor_apostado" required>
+            </div>
+        </div>
+        <div class="col-sm-3 mt-3">
+            <label for="returnViewer" class="form-label ms-4">Expectativa</label>
+            <div class="d-flex justify-content-start align-items-center">
+                <span class="pe-2">R$</span>
+                <input type="text" class="form-control" id="returnViewer" name="returnViewer" disabled>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-success">Apostar</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
 <script>
+    var odd = null
+
     // Create an XMLHttpRequest object
     const xhttp = new XMLHttpRequest();
 
@@ -12,13 +104,42 @@ Trevo | criar evento
     xhttp.onload = function () {
         // Here you can use the Data
         var evento = JSON.parse(this.responseText)
-        console.log(evento);
-        document.getElementById("mainBlock").innerHTML = evento.titulo
+        var options = Object.keys(evento.opcoes)
+        var nOptions = options.length
+        var content = ""
+        for (let i = 0; i < nOptions; i++) {
+            content += `<input type="radio" class="btn-check" name="options-outlined" id="success-outlined-${i}" autocomplete="off"
+                            onclick="selected_odd(this)">
+                        <label class="btn btn-outline-success p-3" for="success-outlined-${i}">
+                            ${options[i]}
+                            <br class="d-none d-sm-block">
+                            <span class="d-inline d-sm-none"> &nbsp; | &nbsp; </span>
+                            <strong id="oddValue${i}">${evento.opcoes[options[i]]}</strong>
+                        </label>`
+        }
+        document.getElementById("option_picker").innerHTML = content
+        document.getElementById("titulo-evento").innerHTML = evento.titulo
+        document.getElementById("descricao-evento").innerHTML = evento.descricao
+
+        odd = document.getElementById("oddValue0").innerText
     }
 
     // Send a request
     xhttp.open("GET", "/get_event_data/{{event_id}}");
     xhttp.send();
+
+    function selected_odd(elemento) {
+        label = elemento.nextElementSibling
+        odd = label.children[2].innerText
+        valor = document.getElementById("valor_apostado").value
+        calculator(valor)
+    }
+
+    function calculator(value) {
+        var returnValue = value * odd
+        document.getElementById("returnViewer").value = returnValue.toFixed(2)
+    }
+
 </script>
 
 
