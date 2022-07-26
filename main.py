@@ -3,7 +3,6 @@ from flask import Flask, redirect, render_template, request, url_for, abort
 from flask_bcrypt import Bcrypt
 from os import urandom
 from json import loads
-from is_safe_url import is_safe_url
 from flask_login import LoginManager, login_user, current_user, user_accessed, login_required, logout_user
 from DBconfig import collection_customers, collection_events, parse_json
 from bson.objectid import ObjectId
