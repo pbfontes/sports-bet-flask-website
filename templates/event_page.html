@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+Trevo | criar evento
+{% endblock %}
+{% block content %}
+
+<script>
+    // Create an XMLHttpRequest object
+    const xhttp = new XMLHttpRequest();
+
+    // Define a callback function
+    xhttp.onload = function () {
+        // Here you can use the Data
+        var evento = JSON.parse(this.responseText)
+        console.log(evento);
+        document.getElementById("mainBlock").innerHTML = evento.titulo
+    }
+
+    // Send a request
+    xhttp.open("GET", "/get_event_data/{{event_id}}");
+    xhttp.send();
+</script>
+
+
+{% endblock %}

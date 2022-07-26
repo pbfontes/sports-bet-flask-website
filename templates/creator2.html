@@ -14,6 +14,13 @@ width='8' height='8' %3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill
     </ol>
 </nav>
 
+<p class="mt-4 text-secondary">Nome do evento:</p>
+<div class="card text-bg-secondary mt-1 rounded-3">
+    <div class="card-body">
+        {{event_name}}
+    </div>
+</div>
+<p class="mt-4 text-secondary">Defina os participantes do evento:</p>
 <form class="row g-3" action="/checkNewEvent2/{{event_id}}" method="post">
 
     <div id="options">
