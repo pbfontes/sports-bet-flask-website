@@ -7,6 +7,8 @@ class User():
         self.telefone = user_json["telefone"]
         self.usuario = user_json["usuario"]
         self.senha_hash = user_json["senha"]
+        self.saldo = user_json["saldo"]
+        self.eventos_aportados = user_json["eventos-aportados"]
 
     @staticmethod
     def is_authenticated():

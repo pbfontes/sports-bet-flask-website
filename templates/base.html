@@ -50,32 +50,42 @@
                         aria-label="Search">
                 </form>
                 <ul class="navbar-nav navbar-text">
+
+                    {% if current_user.is_authenticated %}
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Saldo:
                             <span class="text-success">
-                                valor
+                                {{current_user.saldo}}
                             </span>
                         </a>
                     </li>
 
-
-                    {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             {{ current_user.nome }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{url_for('perfil')}}">Perfil</a></li>
                             <li><a class="dropdown-item" href="{{url_for('logout')}}">Sair</a></li>
                         </ul>
+                    </li>
 
-                        {% else %}
+                    {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('signup')}}">
+                            Criar conta
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{url_for('signin')}}"> Entrar </a>
-                        {% endif %}
-
                     </li>
+                    {% endif %}
+
+
 
                 </ul>
 

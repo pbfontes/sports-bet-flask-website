@@ -56,14 +56,16 @@ def checkNewEvent1():
         hora = request.form.get("inputHora")
         categoria = request.form.get("inputCategoria")
         usuario = request.form.get("usuario_criador")
+        data_atual = datetime.now()
 
         event_data["titulo"] = titulo
         event_data["descricao"] = descricao
-        event_data["dia"] = dia
-        event_data["hora"] = hora
+        event_data["dia-termino"] = dia
+        event_data["hora-termino"] = hora
         event_data["categoria"] = categoria
         event_data["usuario_criador"] = ObjectId(extract_valid_id(usuario))
         event_data["status"] = "inativo"
+        event_data["data-criacao"] = data_atual
 
         result = collection_events.insert_one(parse_json(event_data))
 
@@ -133,6 +135,8 @@ def checkUserSignUp():
         user_data["usuario"] = user
         user_data["senha"] = bcrypt.generate_password_hash(
             senha).decode('utf-8')
+        user_data["eventos-aportados"] = []
+        user_data["saldo"] = 100.0
 
         user_id = collection_customers.insert_one(parse_json(user_data))
 
@@ -145,9 +149,13 @@ def checkUserSignUp():
     return redirect("/cadastro")
 
 
-@ app.route("/showEvents/<filter>")
-def showEvents(filter):
-    return getEvents(filter)
+@ app.route("/showEvents")
+def showEvents():
+    filters = request.args.to_dict()
+    print(filters)
+    if current_user.is_authenticated:
+        return getEvents(filters, current_user.id)
+    return getEvents(filters)
 
 
 @ app.route("/login")
@@ -211,6 +219,7 @@ def event_data(event_id):
 def process_bet(event_id):
     if request.method == "POST":
 
+        # atualizando coleção de eventos
         usuario = ObjectId(extract_valid_id(current_user.id))
         valor = request.form.get("valor_apostado")
         opcao = request.form.get("options")
@@ -228,8 +237,55 @@ def process_bet(event_id):
 
         collection_events.update_one(query, newValues)
 
+        # atualizando coleção de usuários
+        query2 = {"_id": ObjectId(extract_valid_id(current_user.id))}
+        user = collection_customers.find_one(query2)
+
+        if ObjectId(event_id) not in user["eventos-aportados"]:
+
+            newValues2 = {"$push": {"eventos-aportados": ObjectId(event_id)}}
+            collection_customers.update_one(query2, newValues2)
+
         return redirect(url_for("home"))
     return redirect(url_for("home"))
+
+
+@ app.route("/perfil")
+@login_required
+def perfil():
+    return render_template("user_profile.html")
+
+
+@ app.route("/alterar_dados")
+@login_required
+def alterar_dados():
+    return render_template("update_user_data.html")
+
+
+@ app.route("/checkUserDataUpdate", methods=["GET", "POST"])
+@login_required
+def checkUserDataUpdate():
+    if request.method == "POST":
+        user_data = dict()
+        nome = request.form.get("inputNome")
+        cpf = request.form.get("inputCPF")
+        email = request.form.get("inputEmail")
+        telefone = request.form.get("inputTelefone")
+        user = request.form.get("inputUser")
+
+        user_data["nome"] = nome
+        user_data["cpf"] = cpf
+        user_data["email"] = email
+        user_data["telefone"] = telefone
+        user_data["usuario"] = user
+
+        query = {"_id": ObjectId(extract_valid_id(current_user.id))}
+        newValues = {"$set": user_data}
+
+        collection_customers.update_one(query, newValues)
+
+        return redirect(url_for('home'))
+    return redirect("/cadastro")
 
 
 if __name__ == '__main__':

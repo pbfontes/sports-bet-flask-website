@@ -6,6 +6,38 @@ Trevo | eventos
 {% block content %}
 
 
+
+<h4 class='ms-3 ps-3 pt-2'>Perfil: {{current_user.nome}}</h4>
+
+
+<div class="row p-3 text-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                Saldo: <span class="text-success" id="valor-saldo">R$ {{current_user.saldo}}</span>
+            </div>
+        </div>
+    </div>
+    <a class="col-md-4 text-decoration-none link-dark" href="{{url_for('alterar_dados')}}">
+        <div class="card">
+            <div class="card-body">
+                Dados da conta
+            </div>
+        </div>
+    </a>
+
+    <a class="col-md-4 text-decoration-none link-dark" href="">
+        <div class="card">
+            <div class="card-body">
+                Histórico de apostas
+            </div>
+        </div>
+    </a>
+
+</div>
+
+<div id="open-bets" class="p-3"></div>
+
 <!-- <div class="card mb-3 rounded-3">
     <div class="card-header">
         Featured
@@ -42,7 +74,7 @@ Trevo | eventos
         var eventos = JSON.parse(this.responseText)
         eventos = eventos.events
 
-        var content = ""
+        var content = `<h4 class='ms-3 mb-4 mt-2'>Apostas em aberto (${eventos.length})</h4>`
 
         for (let event of eventos) {
             if (event.status == "ativo") {
@@ -79,11 +111,11 @@ Trevo | eventos
         }
 
         console.log(this.responseText);
-        document.getElementById("mainBlock").innerHTML = content
+        document.getElementById("open-bets").innerHTML = content
     }
 
     // Send a request
-    xhttp.open("GET", "/showEvents?category=all&usage=home");
+    xhttp.open("GET", "/showEvents?usage=profile&status=active");
     xhttp.send();
 </script>
 {% endblock %}

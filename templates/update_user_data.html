@@ -1,0 +1,41 @@
+{% extends 'base_cadastro.html' %}
+{% block title %}
+Alterar dados
+{% endblock %}
+{% block header %}
+Alterar dados <a class="text-success" href="{{url_for('home')}}">trevo</a>
+{% endblock %}
+
+{% block nome %}
+value="{{current_user.nome}}"
+{% endblock %}
+
+{% block cpf %}
+value="{{current_user.cpf}}"
+{% endblock %}
+
+{% block email %}
+value="{{current_user.email}}"
+{% endblock %}
+
+{% block usuario %}
+value="{{current_user.usuario}}"
+{% endblock %}
+
+{% block telefone %}
+value="{{current_user.telefone}}"
+{% endblock %}
+
+{% block senha %}
+
+<div class="col-md-4">
+    <label for="inputPassword" class="form-label">Senha</label>
+    <button type="button" class="btn btn-outline-secondary d-block">Alterar senha</button>
+
+</div>
+
+{% endblock %}
+
+{% block action %}
+action="{{ url_for('checkUserDataUpdate')}}"
+{% endblock %}
