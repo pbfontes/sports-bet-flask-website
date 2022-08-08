@@ -32,58 +32,6 @@ Trevo | eventos
     </div>
 </div> -->
 
-<script>
-    // Create an XMLHttpRequest object
-    const xhttp = new XMLHttpRequest();
 
-    // Define a callback function
-    xhttp.onload = function () {
-        // Here you can use the Data
-        var eventos = JSON.parse(this.responseText)
-        eventos = eventos.events
-
-        var content = ""
-
-        for (let event of eventos) {
-            if (event.status == "ativo") {
-                content += `<div class="card mb-3 rounded-3">
-                                <div class="card-header">
-                                    ${event.categoria}
-                                </div>
-                                <div class="card-body">
-                                    <div class="container">
-                                        <div class="row g-3">
-                                            <div class="col-lg-7 col-xxl-8">
-                                                <h4 class="card-title">${event.titulo}</h4>
-                                                <p class="card-text">${event.descricao}</p>
-                                            </div>
-                                            <div class="col-lg-5 col-xxl-4">
-                                                <div class="d-grid gap-2 d-lg-flex justify-content-lg-end">`
-                var options = Object.keys(event.opcoes)
-                var nOptions = options.length
-                for (let i = 0; i < nOptions; i++) {
-                    content += `<a class="btn btn-outline-success p-3 rounded-3" href="/visualizar_evento/${event._id.$oid}?option=${i}">${options[i]}
-                                    <br class="d-none d-lg-block">
-                                    <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
-                                    <strong>${event.opcoes[options[i]].odd}</strong>
-                                </a>`
-                }
-
-                content += ` </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`
-            }
-        }
-
-        console.log(this.responseText);
-        document.getElementById("mainBlock").innerHTML = content
-    }
-
-    // Send a request
-    xhttp.open("GET", "/showEvents?category=all&usage=home");
-    xhttp.send();
-</script>
+<script src="{{url_for('static', filename='card_maker.js')}}" trevousage="home"></script>
 {% endblock %}

@@ -210,6 +210,10 @@ def event_page(event_id):
     event = collection_events.find_one({"_id": ObjectId(event_id)})
     if event == None:
         return redirect(url_for('home'))
+
+    if current_user.is_authenticated and event["usuario_criador"]["$oid"] == extract_valid_id(current_user.id):
+        return render_template("creator_view.html")
+
     args = request.args.to_dict()
     if "option" in args:
         return render_template("event_page.html", event_id=event_id, option=args["option"])

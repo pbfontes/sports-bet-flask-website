@@ -19,6 +19,9 @@ Trevo | eventos
         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
             aria-labelledby="panelsStayOpen-headingOne">
             <div class="accordion-body" id="em-aberto">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
 
             </div>
         </div>
@@ -59,75 +62,7 @@ Trevo | eventos
 </div>
 
 
-<script>
-    // Create an XMLHttpRequest object
-    const xhttp = new XMLHttpRequest();
-
-    // Define a callback function
-    xhttp.onload = function () {
-        // Here you can use the Data
-        var eventos = JSON.parse(this.responseText)
-        eventos = eventos.events
-
-        var content_aberto = ""
-        var content_nPubli = ""
-        var content_hist = ""
-
-        // var content = `<h4 class='ms-3 mb-4 mt-2'>Apostas em aberto (${eventos.length})</h4>`
-
-        for (let event of eventos) {
-
-            var content1 = `<div class="card mb-3 rounded-3">
-                                <div class="card-header">
-                                    ${event.categoria}
-                                </div>
-                                <div class="card-body">
-                                    <div class="container">
-                                        <div class="row g-3">
-                                            <div class="col-lg-7 col-xxl-8">
-                                                <h4 class="card-title">${event.titulo}</h4>
-                                                <p class="card-text">${event.descricao}</p>
-                                            </div>
-                                            <div class="col-lg-5 col-xxl-4">
-                                                <div class="d-grid gap-2 d-lg-flex justify-content-lg-end">`
-            var options = Object.keys(event.opcoes)
-            var nOptions = options.length
-            var content2 = ""
-            for (let i = 0; i < nOptions; i++) {
-                content2 += `<a class="btn btn-secondary p-3 rounded-3" href="/visualizar_evento/${event._id.$oid}">${options[i]}
-                                    <br class="d-none d-lg-block">
-                                    <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
-                                    <strong>${event.opcoes[options[i]].odd}</strong>
-                                </a>`
-            }
-
-            var content3 = ` </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`
-
-
-            if (event.status == "ativo") {
-                content_aberto += content1 + content2 + content3
-            } else if (event.status == "finalizado") {
-                content_hist += content1 + content2 + content3
-            } else {
-                content_nPubli += content1 + content2 + content3
-            }
-        }
-
-        console.log(this.responseText);
-        document.getElementById("em-aberto").innerHTML = content_aberto
-        document.getElementById("historico").innerHTML = content_hist
-        document.getElementById("nao-publicado").innerHTML = content_nPubli
-    }
-
-    // Send a request
-    xhttp.open("GET", "/showEvents?usage=creator");
-    xhttp.send();
-</script>
+<script src="{{url_for('static', filename='card_maker.js')}}" trevousage="creator"></script>
 
 
 {% endblock %}
