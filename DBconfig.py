@@ -10,6 +10,7 @@ load_dotenv(place)
 USER_NAME = getenv("USER_NAME")
 PASSWORD = getenv("PASSWORD")
 CLIENT = getenv("CLIENT")
+APP_KEY = getenv("APP_SECRET_KEY")
 
 myclient = pymongo.MongoClient(
     f"mongodb+srv://{USER_NAME}:{PASSWORD}@{CLIENT}")

@@ -5,7 +5,7 @@ from os import urandom
 from json import loads
 from datetime import datetime
 from flask_login import LoginManager, login_user, current_user, user_accessed, login_required, logout_user
-from DBconfig import collection_customers, collection_events, parse_json, extract_valid_id
+from DBconfig import collection_customers, collection_events, parse_json, extract_valid_id, APP_KEY
 from bson.objectid import ObjectId
 from events_viewer import getEvents
 from user_model import User
@@ -18,7 +18,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-app.secret_key = urandom(16)
+app.secret_key = APP_KEY
 # mongo = PyMongo(app)
 
 
