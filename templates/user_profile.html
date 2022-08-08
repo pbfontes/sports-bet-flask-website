@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-Trevo | eventos
+Trevo | Usuário
 {% endblock %}
 
 {% block content %}
@@ -11,14 +11,14 @@ Trevo | eventos
 
 
 <div class="row p-3 text-center">
-    <div class="col-md-4">
+    <div class="col-md-4 mb-3">
         <div class="card">
             <div class="card-body">
                 Saldo: <span class="text-success" id="valor-saldo">R$ {{current_user.saldo}}</span>
             </div>
         </div>
     </div>
-    <a class="col-md-4 text-decoration-none link-dark" href="{{url_for('alterar_dados')}}">
+    <a class="col-md-4 text-decoration-none link-dark mb-3" href="{{url_for('alterar_dados')}}">
         <div class="card">
             <div class="card-body">
                 Dados da conta
@@ -26,10 +26,18 @@ Trevo | eventos
         </div>
     </a>
 
-    <a class="col-md-4 text-decoration-none link-dark" href="">
+    <a class="col-md-4 text-decoration-none link-dark mb-3" href="">
         <div class="card">
             <div class="card-body">
                 Histórico de apostas
+            </div>
+        </div>
+    </a>
+
+    <a class="col-md-4 text-decoration-none link-dark" href="{{url_for('creator_page')}}">
+        <div class="card">
+            <div class="card-body">
+                Gerenciar eventos
             </div>
         </div>
     </a>

@@ -119,12 +119,20 @@ Trevo | criar evento
                         </label>`
         }
         document.getElementById("option_picker").innerHTML = content
-        document.getElementById("success-outlined-0").checked = true
         document.getElementById("titulo-evento").innerHTML = evento.titulo
         document.getElementById("descricao-evento").innerHTML = evento.descricao
-        document.getElementById("odd-da-compra").value = evento.opcoes[options[0]].odd
+        if ("{{option}}") {
+            document.getElementById("success-outlined-{{option}}").checked = true
+            document.getElementById("odd-da-compra").value = evento.opcoes[options["{{option}}"]].odd
+            odd = evento.opcoes[options["{{option}}"]].odd
+        } else {
+            document.getElementById("success-outlined-0").checked = true
+            document.getElementById("odd-da-compra").value = evento.opcoes[options[0]].odd
+            odd = evento.opcoes[options[0]].odd
+        }
 
-        odd = evento.opcoes[options[0]].odd
+
+        console.log(evento);
     }
 
     // Send a request

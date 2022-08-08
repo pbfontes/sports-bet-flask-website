@@ -62,7 +62,7 @@ Trevo | eventos
                 var options = Object.keys(event.opcoes)
                 var nOptions = options.length
                 for (let i = 0; i < nOptions; i++) {
-                    content += `<a class="btn btn-secondary p-3 rounded-3" href="/visualizar_evento/${event._id.$oid}">${options[i]}
+                    content += `<a class="btn btn-outline-success p-3 rounded-3" href="/visualizar_evento/${event._id.$oid}?option=${i}">${options[i]}
                                     <br class="d-none d-lg-block">
                                     <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
                                     <strong>${event.opcoes[options[i]].odd}</strong>

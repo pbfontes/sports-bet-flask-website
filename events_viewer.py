@@ -22,4 +22,15 @@ def getEvents(filters, user_id=None):
         for element in collection_events.find(query_events):
             events.append(dict(element))
         return parse_json({"events": events})
+    elif filters["usage"] == "creator" and user_id is not None:
+        query_user = {"_id": ObjectId(extract_valid_id(user_id))}
+        user = collection_customers.find_one(query_user)
+        eventos = user["eventos-criados"]
+
+        query_events = {"_id": {"$in": eventos}}
+        events = list()
+        for element in collection_events.find(query_events):
+            events.append(dict(element))
+        return parse_json({"events": events})
+
     return None

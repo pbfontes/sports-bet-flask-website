@@ -69,6 +69,12 @@ def checkNewEvent1():
 
         result = collection_events.insert_one(parse_json(event_data))
 
+        # ataulizando usuário
+        query = {"_id": event_data["usuario_criador"]}
+        newValues = {
+            "$push": {"eventos-criados": ObjectId(result.inserted_id)}}
+        collection_customers.update_one(query, newValues)
+
         print(result.inserted_id)
 
         return redirect(f"/selecionar_opcoes/{result.inserted_id}")
@@ -204,6 +210,9 @@ def event_page(event_id):
     event = collection_events.find_one({"_id": ObjectId(event_id)})
     if event == None:
         return redirect(url_for('home'))
+    args = request.args.to_dict()
+    if "option" in args:
+        return render_template("event_page.html", event_id=event_id, option=args["option"])
     return render_template("event_page.html", event_id=event_id)
 
 
@@ -286,6 +295,13 @@ def checkUserDataUpdate():
 
         return redirect(url_for('home'))
     return redirect("/cadastro")
+
+
+@ app.route("/gerenciar_eventos")
+@login_required
+def creator_page():
+    # if usuario é criador:
+    return render_template("creator_page.html")
 
 
 if __name__ == '__main__':
