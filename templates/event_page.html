@@ -115,7 +115,7 @@ Trevo | criar evento
                             ${options[i]}
                             <br class="d-none d-sm-block">
                             <span class="d-inline d-sm-none"> &nbsp; | &nbsp; </span>
-                            <strong id="oddValue${i}">${evento.opcoes[options[i]].odd}</strong>
+                            <strong id="oddValue${i}">${evento.opcoes[options[i]].odd.toFixed(2)}</strong>
                         </label>`
         }
         document.getElementById("option_picker").innerHTML = content

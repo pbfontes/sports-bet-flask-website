@@ -22,7 +22,7 @@ function std_card(event) {
         content += `<a class="btn btn-outline-success p-3 rounded-3" href="/visualizar_evento/${event._id.$oid}?option=${i}">${options[i]}
                                     <br class="d-none d-lg-block">
                                     <span class="d-inline d-lg-none"> &nbsp; | &nbsp; </span>
-                                    <strong>${event.opcoes[options[i]].odd}</strong>
+                                    <strong>${event.opcoes[options[i]].odd.toFixed(2)}</strong>
                                 </a>`
     }
 

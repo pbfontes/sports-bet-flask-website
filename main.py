@@ -9,7 +9,7 @@ from DBconfig import collection_customers, collection_events, parse_json, extrac
 from bson.objectid import ObjectId
 from events_viewer import getEvents
 from user_model import User
-from odd_calculator import set_init_odd
+from odd_calculator import set_init_odd, update_odds
 
 
 app = Flask(__name__)
@@ -211,8 +211,9 @@ def event_page(event_id):
     if event == None:
         return redirect(url_for('home'))
 
-    if current_user.is_authenticated and event["usuario_criador"]["$oid"] == extract_valid_id(current_user.id):
-        return render_template("creator_view.html")
+    # descomentar para a visualização doc riador
+    # if current_user.is_authenticated and event["usuario_criador"]["$oid"] == extract_valid_id(current_user.id):
+    #     return render_template("creator_view.html")
 
     args = request.args.to_dict()
     if "option" in args:
@@ -243,7 +244,7 @@ def process_bet(event_id):
         bet_data["usuario"] = usuario
         bet_data["valor-aporte"] = float(valor)
         bet_data["horario"] = horario
-        bet_data["odd-comprada"] = float(odd_do_aporte)
+        bet_data["odd-comprada"] = round(float(odd_do_aporte), 2)
 
         query = {"_id": ObjectId(event_id)}
         newValues = {"$push": {f"opcoes.{opcao}.aportes": bet_data}}
@@ -258,6 +259,8 @@ def process_bet(event_id):
 
             newValues2 = {"$push": {"eventos-aportados": ObjectId(event_id)}}
             collection_customers.update_one(query2, newValues2)
+
+        update_odds(event_id)
 
         return redirect(url_for("home"))
     return redirect(url_for("home"))
