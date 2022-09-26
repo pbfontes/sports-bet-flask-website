@@ -1,0 +1,18 @@
+<%- include('include/_header') %>
+
+    <form action="/api/participation/<%= event %> " method="post">
+
+        <div class="container mt-4" id="teste">
+            <h1 class="mb-0 pb-0 fw-bold">Resenha casa da Amanda</h1>
+        </div>
+
+        <%- include('include/_nameSelect') %>
+
+        <div class="container">
+        <%- include('include/_negative_option_button') %>
+        </div>
+
+    </form>
+    <br> <br>
+
+<%- include('include/_footer') %>

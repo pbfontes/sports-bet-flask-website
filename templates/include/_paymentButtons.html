@@ -1,0 +1,25 @@
+<div class=" container text-center mt-5">
+    <div class="row g-3">
+        <div class="d-grid">
+            <input type="submit" class="btn text-light fw-bold rounded-1 py-3 fs-5"
+                style="background: linear-gradient(120deg, #8A2BE2 1%, #B537F2 40%, #3CB9FC); border: 0px;"
+                value="Realizar pagamento"
+                name="confirmOption">
+            </input>
+        </div>
+
+        <% if (guestStatus != "pagamento_em_aberto") { %>
+            <div class="d-grid mb-4">
+                <input 
+                    type="submit" 
+                    class="btn fw-bold rounded-1 py-3 fs-5" 
+                    name="confirmOption"
+                    style="border: solid; border-width: 1.2px; color: #120052;" 
+                    value="Confirmar e pagar depois">
+                </input>
+            </div>
+        <% } %>
+
+        
+    </div>
+</div>

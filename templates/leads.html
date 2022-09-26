@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container p-5">
+  <h3 class="mb-3">Bem vindo à Vinco!</h3>
+  <!-- <p>Eventos em aberto</p>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-auto">Resenha fabinho</div>
+      </div>
+    </div>
+  </div>
+  <hr /> -->
+  <p>
+    Nós surgimos para o encontro com seus amigos seja simples e divertido
+    &#x1F60A;
+  </p>
+  <p>
+    Deixe seu telefone ou email abaixo e te avisaremos quando você puder criar
+    seus churrascos ou resenhas na Vinco!
+  </p>
+  <form action="" method="post">
+    <div class="row">
+      <div class="col-9">
+        <input
+          class="form-control form-control-sm"
+          type="text"
+          placeholder="Telefone ou email"
+          aria-label=".form-control-sm example"
+        />
+      </div>
+      <div class="col-3">
+        <button type="submit" class="btn btn-success btn-sm">Enviar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

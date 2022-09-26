@@ -1,0 +1,16 @@
+<div class="text-center mt-3">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<p class="text-center mt-3">Estamos buscando as enquetes para você ;)</p>
+
+<!-- <script src="/js/loadPollResults.js"></script> -->
+<script src="{{ url_for('static', filename='loadPollResults.js')}}"></script>
+<script>
+  document.getElementById("tab2").onselect = showPollResults(
+    "{{event_id}}",
+    "poll-content"
+  );
+</script>

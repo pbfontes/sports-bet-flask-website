@@ -1,0 +1,27 @@
+    <div class="container mt-4">
+        <p class="fw-bold m-0 ">Amanda quer saber...</p>
+    
+        <% for( let i=0; i < enquetes.length; i++ ) { %>
+            <p class="mb-0 mt-3"><%= `${i+1}. ` %> <%= enquetes[i].question %></p>
+            <div class="row g-2 mt-1">
+                <% for( let j=0; j < enquetes[i].options.length; j++ ) { %>
+    
+                    <div class="col-6 d-grid">
+                        <input type="radio" class="btn-check"
+                        name="<%= enquetes[i]._id %>"
+                        id="<%= enquetes[i].options[j].optionName %><%= i %>"
+                        autocomplete="off"
+                        value="<%= enquetes[i].options[j].optionName %>">
+                        <label 
+                            class="btn btn-outline-secondary btn-sm"
+                            for="<%= enquetes[i].options[j].optionName %><%= i %>">
+                            <%= enquetes[i].options[j].optionName %>
+                        </label>
+                    </div>
+    
+                <% } %>
+            </div>
+        <% } %>
+    
+    </div>
+

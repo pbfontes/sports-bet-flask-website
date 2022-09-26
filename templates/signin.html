@@ -1,50 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cadastro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courgette&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
-    <div class="vh-100 vw-100 d-flex align-items-center justify-content-center">
-        <div style="max-width: 24rem">
-            <div class="card">
-                <div class="card-header">
-                    Log in <a class="text-success" href="{{url_for('home')}}">Trevo</a>
-                </div>
+  <body>
+    <div
+      class="vh-100 vw-100 d-flex align-items-center justify-content-center p-2"
+    >
+      <div style="max-width: 24rem">
+        <div class="card">
+          <div class="card-header text-center">
+            <a
+              class="text-success"
+              href="{{url_for('home')}}"
+              style="text-decoration: none"
+              ><span
+                class="mb-0 h1 mx-auto"
+                style="
+                  font-family: 'Courgette', cursive;
+                  font-size: 2rem;
+                  color: black;
+                "
+                >Login Vinco &#128522;</span
+              ></a
+            >
+          </div>
 
-                <div class="card-body">
-                    <form class="row g-3" action="{{ url_for('checkUserSignIn')}}" method="post">
-                        <div class="col-12">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email"
-                                name="inputEmail" required>
-                        </div>
-                        <div class="col-12">
-                            <input type="password" class="form-control" id="inputPassword" name="inputPassword"
-                                placeholder="Senha" required>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{{url_for('signup')}}" class="text-success" style="text-decoration: none">
-                                    Criar conta
-                                </a>
-                                <button type="submit" class="btn btn-success">Entrar</button>
-                            </div>
-                        </div>
-                    </form>
+          <div class="card-body">
+            {% if isCreateAction == True %}
+            <form
+              class="row g-3"
+              action="/checkUserSignIn?create={{isCreateAction}}"
+              method="post"
+            >
+
+            {% elif isConfirmAction == True %}
+            <form
+            class="row g-3"
+            action="/checkUserSignIn?confirm={{isConfirmAction}}&event_id={{event_id}}"
+            method="post"
+            >
+            {% else %}
+
+            <form
+            class="row g-3"
+            action="/checkUserSignIn"
+            method="post"
+            >
+
+            {% endif %}
+              <div class="col-12">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="inputEmail"
+                  placeholder="Email"
+                  name="inputEmail"
+                  required
+                />
+              </div>
+              <div class="col-12">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="inputPassword"
+                  name="inputPassword"
+                  placeholder="Senha"
+                  required
+                />
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+
+                  {% if isConfirmAction == True %}
+                  <a
+                    href="/cadastro?confirm=True"
+                    class="text-primary"
+                    style="text-decoration: none"
+                  >
+                    Criar conta
+                  </a>
+                  {% else %}
+
+                  <a
+                    href="{{url_for('signup')}}"
+                    class="text-primary"
+                    style="text-decoration: none"
+                  >
+                    Criar conta
+                  </a>
+                  {% endif %}
+                  <button type="submit" class="btn btn-primary">Entrar</button>
                 </div>
-            </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
-</body>
-
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

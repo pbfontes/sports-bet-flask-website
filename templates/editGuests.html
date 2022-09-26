@@ -1,0 +1,139 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<div class="container p-3">
+  <div class="mt-2 mb-4">
+    <h6 class="fw-semibold fs-5">{{event.eventName}}</h6>
+    <small>Aqui você pode editar a lista de convidados! <br><strong>Dica:</strong> depois de escrever um convidado, dê enter para adicionar um novo </small>&#x1F609;
+  </div>
+
+  <small>Convidados (<span id="guestCount">{{nGuests}}</span>)</small>
+  <form class="mb-5" action="/salvar-convidados/{{event._id}}" method="post" id="myForm">
+  {% for guest in guests %}
+  <div class="row mt-3" id="guest{{loop.index}}">
+    <div class="col-6">
+      <input type="text" class="form-control guestField" name="guest{{loop.index}}" value="{{guest.name}}" aria-label="First name">
+    </div>
+    <div class="col-4">
+      <select class="form-select" aria-label="Default select example" name="guest{{loop.index}}">
+        {% if guest.status == 'recusado' %}
+        <option value="convidado">Convidado</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="talvez">Talvez</option>
+        <option value="recusado" selected>Recusado</option>
+        {% elif guest.status == 'confirmado' %}
+        <option value="convidado">Convidado</option>
+        <option value="confirmado" selected>Confirmado</option>
+        <option value="talvez">Talvez</option>
+        <option value="recusado">Recusado</option>
+        {% elif guest.status == 'talvez' %}
+        <option value="convidado">Convidado</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="talvez" selected>Talvez</option>
+        <option value="recusado">Recusado</option>
+        {% else %}
+        <option value="convidado" selected>Convidado</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="talvez">Talvez</option>
+        <option value="recusado">Recusado</option>
+        {% endif %}
+      </select>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn-close" aria-label="Close" onclick="deleteRow(this)"></button>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row mt-3" id="guest{{nGuests + 1}}">
+    <div class="col-6">
+      <input type="text" class="form-control guestField" name="guest{{nGuests + 1}}" aria-label="First name">
+    </div>
+    <div class="col-4">
+      <select class="form-select" aria-label="Default select example" name="guest{{nGuests + 1}}">
+        <option value="convidado" selected>Convidado</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="talvez">Talvez</option>
+        <option value="recusado">Recusado</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn-close" aria-label="Close" onclick="deleteRow(this)"></button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+  
+
+
+  </form>
+</div>
+<script>
+  var numBox = Number('{{nGuests}}') + 1;
+  var id = Number('{{nGuests}}') + 1
+
+  function updateSelectors() {
+    let fields = document.querySelectorAll(".guestField");
+    fields.forEach(function(elem){
+      receberEnter(elem)
+    });
+  }
+
+
+  function receberEnter(elem) {
+    elem.addEventListener("keyup", event => {
+    if(event.key !== "Enter") return; // Use `.key` instead.
+    numBox += 1;
+    id += 1;
+    document.getElementById('guestCount').innerHTML = numBox - 1
+    event.srcElement.parentElement.parentElement.insertAdjacentHTML("afterend", 
+    `<div class="row mt-3" id="guest${id}">
+    <div class="col-6">
+      <input type="text" class="form-control guestField" aria-label="First name" name="guest${id}" id="${id}">
+    </div>
+    <div class="col-4">
+      <select class="form-select" aria-label="Default select example" name="guest${id}">
+        <option value="convidado" selected>Convidado</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="talvez">Talvez</option>
+        <option value="recusado">Recusado</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn-close" aria-label="Close" onclick="deleteRow(this)"></button>
+    </div>
+  </div>`);
+    event.preventDefault(); // No need to `return false;`.
+    console.log(id);
+    // receberEnter(document.getElementById(id));
+    receberEnter(event.srcElement.parentElement.parentElement.nextElementSibling);
+    // console.log(event.srcElement.parentElement.parentElement.nextElementSibling);
+    // updateSelectors()
+  });
+  }
+
+  updateSelectors()
+  
+  function deleteRow(elem) {
+    elem.parentElement.parentElement.remove()
+    numBox -= 1;
+    document.getElementById('guestCount').innerHTML = numBox - 1
+  }
+
+
+  document.getElementById("myForm").onkeypress = function(e) {
+    var key = e.charCode || e.keyCode || 0;     
+    if (key == 13) {
+      e.preventDefault();
+    }
+  } 
+
+
+
+</script>
+{% endblock %}

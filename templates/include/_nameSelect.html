@@ -1,0 +1,38 @@
+<div class="container mt-4" id="demo">
+    <p class="">Selecione o seu nome abaixo</p>
+
+
+    <% for( let index=0; index < convidados.length; index++ ) { %>
+
+
+        <div class="form-check">
+            <input 
+            class="form-check-input" 
+            type="radio" 
+            name="guest" 
+            id='<%= convidados[index].name %> '
+            value='<%= convidados[index].name %>'
+            gueststatus = '<%= convidados[index].status %>'
+            onclick="showContent('<%= index %>')">
+
+            <label class="form-check-label" for='<%= convidados[index].name %>' style="font-size: 1.05rem;">
+                <%= convidados[index].name %>
+            </label>
+        </div>
+
+    <% } %>
+
+    <script>
+        function showContent(idx) {
+            let guestStatus = document.querySelector('input[name="guest"]:checked').getAttribute("gueststatus");
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.getElementById("customContent").innerHTML = this.responseText;
+                }
+            xhttp.open("GET", `/api/evento/${'<%= event %>'}/guestContent/${idx}`, true);
+            xhttp.send();
+        }
+        
+    </script>
+
+</div>

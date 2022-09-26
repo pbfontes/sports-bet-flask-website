@@ -1,0 +1,357 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container p-3">
+  <div class="mt-2 mb-4">
+    <h6 class="fw-semibold fs-5">{{event.eventName}}</h6>
+    <small>Aqui você pode criar enquetes para seus convidados!<br /></small>
+  </div>
+
+  <div class="row align-items-center">
+    <div class="col-auto">
+      <small>Suas enquetes</small>
+    </div>
+    <div class="col-auto">
+      <button
+        class="btn btn-outline-success btn-sm"
+        onclick="adicionarEnquete()"
+      >
+        Nova enquete
+      </button>
+    </div>
+  </div>
+
+  <form action="/salvar-enquetes/{{event._id}}" method="post" id="myForm">
+    {% for poll in event.polls %} {% set id = loop.index %}
+    <div>
+      <div class="row mt-3 align-items-center" id="optionloop.index">
+        <div class="col-10">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="poll{{id}}"
+            value="{{poll.question}}"
+            aria-label="First name"
+            placeholder="Qual a sua bebida preferida?"
+          />
+        </div>
+
+        <div class="col-2">
+          <a type="button" onclick="deletePoll(this)"
+            ><i class="bi bi-trash3 text-danger"></i
+          ></a>
+        </div>
+      </div>
+
+      {% for option in poll.options %}
+
+      <div
+        class="row mt-3 align-items-center justify-content-end"
+        id="optionloop.index"
+      >
+        <div class="col-9">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="poll{{id}}"
+            value="{{option.optionName}}"
+            aria-label="First name"
+            placeholder="Mate"
+          />
+        </div>
+
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            onclick="deleteRow(this)"
+            style="font-size: 0.8rem"
+          ></button>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="row mt-3 justify-content-end">
+        <div class="col-11">
+          <a
+            name="poll{{id}}"
+            class="btn btn-outline-primary btn-sm"
+            onclick="adicionarOpcao(this)"
+          >
+            Nova opção
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- <div>
+      <div class="row mt-3 align-items-center" id="optionloop.index">
+        <div class="col-10">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="poll{{nPolls + 1}}"
+            aria-label="First name"
+            placeholder="Qual a sua bebida preferida?"
+          />
+        </div>
+
+        <div class="col-2">
+          <a type="button" onclick="deletePoll(this)"
+            ><i class="bi bi-trash3 text-danger"></i
+          ></a>
+        </div>
+      </div>
+
+      <div
+        class="row mt-3 align-items-center justify-content-end"
+        id="optionloop.index"
+      >
+        <div class="col-9">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="poll{{nPolls + 1}}"
+            aria-label="First name"
+            placeholder="Mate"
+          />
+        </div>
+
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            onclick="deleteRow(this)"
+            style="font-size: 0.8rem"
+          ></button>
+        </div>
+      </div>
+      <div
+        class="row mt-3 align-items-center justify-content-end"
+        id="optionloop.index"
+      >
+        <div class="col-9">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="poll{{nPolls + 1}}"
+            aria-label="First name"
+            placeholder="Cerveja"
+          />
+        </div>
+
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            onclick="deleteRow(this)"
+            style="font-size: 0.8rem"
+          ></button>
+        </div>
+      </div>
+      <div
+        class="row mt-3 align-items-center justify-content-end"
+        id="optionloop.index"
+      >
+        <div class="col-9">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="poll{{nPolls + 1}}"
+            aria-label="First name"
+            placeholder="Drinks"
+          />
+        </div>
+
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            onclick="deleteRow(this)"
+            style="font-size: 0.8rem"
+          ></button>
+        </div>
+      </div>
+    </div> -->
+  </form>
+
+  <div class="row mt-4 mb-5">
+    <div class="col-12">
+      <div class="d-grid">
+        <button type="submit" form="myForm" class="btn btn-primary">
+          Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var id = Number("{{nPolls}}") + 30;
+
+  function adicionarOpcao(elem) {
+    const thisid = elem.name;
+    elem.parentElement.parentElement.insertAdjacentHTML(
+      "beforebegin",
+      `
+    <div
+        class="row mt-3 align-items-center justify-content-end"
+        id="optionloop.index"
+      >
+        <div class="col-9">
+          <input
+            type="text"
+            class="form-control guestField"
+            name="${thisid}"
+            aria-label="First name"
+          />
+        </div>
+
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            onclick="deleteRow(this)"
+            style="font-size: 0.8rem"
+          ></button>
+        </div>
+      </div>
+    `
+    );
+  }
+
+  function adicionarEnquete() {
+    document.getElementById("myForm").insertAdjacentHTML(
+      "beforeend",
+      `
+      <div>
+      <div class="row mt-3 align-items-center" id="optionloop.index">
+      <div class="col-10">
+        <input
+          type="text"
+          class="form-control guestField"
+          name="poll${id}"
+          aria-label="First name"
+          placeholder="Qual a sua bebida preferida?"
+        />
+      </div>
+
+      <div class="col-2">
+        <a type="button" onclick="deletePoll(this)"
+          ><i class="bi bi-trash3 text-danger"></i
+        ></a>
+      </div>
+    </div>
+
+    <div
+      class="row mt-3 align-items-center justify-content-end"
+      id="optionloop.index"
+    >
+      <div class="col-9">
+        <input
+          type="text"
+          class="form-control guestField"
+          name="poll${id}"
+          aria-label="First name"
+          placeholder="Mate"
+        />
+      </div>
+
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="deleteRow(this)"
+          style="font-size: 0.8rem"
+        ></button>
+      </div>
+    </div>
+    <div
+      class="row mt-3 align-items-center justify-content-end"
+      id="optionloop.index"
+    >
+      <div class="col-9">
+        <input
+          type="text"
+          class="form-control guestField"
+          name="poll${id}"
+          aria-label="First name"
+          placeholder="Cerveja"
+        />
+      </div>
+
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="deleteRow(this)"
+          style="font-size: 0.8rem"
+        ></button>
+      </div>
+    </div>
+    <div
+      class="row mt-3 align-items-center justify-content-end"
+      id="optionloop.index"
+    >
+      <div class="col-9">
+        <input
+          type="text"
+          class="form-control guestField"
+          name="poll${id}"
+          aria-label="First name"
+          placeholder="Drinks"
+        />
+      </div>
+
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="deleteRow(this)"
+          style="font-size: 0.8rem"
+        ></button>
+      </div>
+    </div>
+    
+    <div class="row mt-3 justify-content-end">
+        <div class="col-11">
+          <a
+            name="poll${id}"
+            class="btn btn-outline-primary btn-sm"
+            onclick="adicionarOpcao(this)"
+          >
+            Nova opção
+          </a>
+        </div>
+      </div>
+
+    </div>`
+    );
+    id += 1;
+  }
+
+  function deleteRow(elem) {
+    elem.parentElement.parentElement.remove();
+    // numBox -= 1;
+    // document.getElementById("guestCount").innerHTML = numBox - 1;
+  }
+
+  function deletePoll(elem) {
+    elem.parentElement.parentElement.parentElement.remove();
+    // numBox -= 1;
+    // document.getElementById("guestCount").innerHTML = numBox - 1;
+  }
+
+  document.getElementById("myForm").onkeypress = function (e) {
+    var key = e.charCode || e.keyCode || 0;
+    if (key == 13) {
+      e.preventDefault();
+    }
+  };
+</script>
+{% endblock %}

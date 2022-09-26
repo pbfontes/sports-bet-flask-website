@@ -1,0 +1,56 @@
+<%- include('include/_header') %>
+
+<div class="container text-center mt-5">
+    <div class="row g-3 align-items-center" style="height: 70vh;">
+        <div>
+            <h2>Selecione uma opção para realizar o pagamento =)</h2>
+            <br><br><br>
+            <div class="d-grid mb-4">
+                <a role="button" class="btn text-light fw-bold rounded-1 py-3 fs-5"
+                    style="background: linear-gradient(120deg, #8A2BE2 1%, #B537F2 40%, #3CB9FC); border: 0px;" 
+                    href="https://www.mercadopago.com.br/checkout/v1/payment/redirect/d127e17b-cc20-4f61-9c7e-953dc9f7bb9d/payment-option-form/?preference-id=266994163-c5f08d50-5ab9-424e-aa1c-c9c5869118b9&router-request-id=b3fb74fd-3090-4ad7-aaa4-63d689ebf9ee&source=link&p=cca24d5fea33ab77d32c2347a8d19ae5#/">
+                    Vou comer carne
+                </a>
+            </div>
+
+
+            <div class="d-grid">
+                <a 
+                    role="button" 
+                    class="btn fw-bold rounded-1 py-3 fs-5" 
+                    style="border: solid; border-width: 1.2px; color: #120052;" href="https://www.mercadopago.com.br/checkout/v1/payment/redirect/affe8ddf-cc99-4f67-b819-894fd96ece9c/payment-option-form/?router-request-id=f9d3aaa4-5241-457c-aba1-89f2b048ba22&source=link&preference-id=266994163-5901f18a-96cd-4f36-b53c-35c04c4abcdd&p=cca24d5fea33ab77d32c2347a8d19ae5#/">
+                    Não vou comer carne
+                </a>
+            </div>
+
+            <br><br><br>
+            <p>
+                <a class="dropdown-toggle text-dark fw-bold" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="text-decoration: none;">
+                    Vai pagar com pix?
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    É só seguir os passos do botão acima, copiar o código e colar no app do seu banco! O código é enviado por e-mail também
+                </div>
+            </div>
+
+            <p class="mt-3">
+                <a class="dropdown-toggle text-dark fw-bold" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample" style="text-decoration: none;">
+                    Vai pagar com cartão da Nubank?
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample2">
+                <div class="card card-body">
+                    A Nubank talvez não autorize o pagamento de cara e comente algo sobre bloqueio de cartão. Fica tranquilo! É só confirmar a compra pelo app e fazer o pedido de novo
+                </div>
+            </div>
+
+
+        </div>
+
+        
+    </div>
+</div>
+
+<%- include('include/_footer') %>

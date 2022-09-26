@@ -1,23 +1,33 @@
-{% extends 'base_cadastro.html' %}
-{% block title %}
-Cadastro
-{% endblock %}
-{% block header %}
-Cadastro <a class="text-success" href="{{url_for('home')}}">trevo</a>
-{% endblock %}
-
-{% block senha %}
+{% extends 'base_cadastro.html' %} {% block title %} Cadastro {% endblock %} {%
+block header %}
+<a class="mx-auto" href="{{url_for('home')}}" style="text-decoration: none"
+  ><span
+    class="mb-0 h1 mx-auto"
+    style="font-family: 'Courgette', cursive; font-size: 2rem; color: black"
+    >Cadastro Vinco &#128513;</span
+  ></a
+>
+{% endblock %} {% block senha %}
 
 <div class="col-md-4">
-    <label for="inputPassword" class="form-label">Senha</label>
-    <input type="password" class="form-control" id="inputPassword" name="inputPassword" required>
+  <label for="inputPassword" class="form-label">Senha</label>
+  <input
+    type="password"
+    class="form-control"
+    id="inputPassword"
+    name="userPassword"
+    required
+  />
 </div>
 <div class="col-md-4">
-    <label for="inputPasswordCheck" class="form-label">Confirmar senha</label>
-    <input type="password" class="form-control" id="inputPasswordCheck" name="inputPasswordCheck" required>
+  <label for="inputPasswordCheck" class="form-label">Confirmar senha</label>
+  <input
+    type="password"
+    class="form-control"
+    id="inputPasswordCheck"
+    name="userPasswordCheck"
+    required
+  />
 </div>
-{% endblock %}
-
-{% block action %}
-action="{{ url_for('checkUserSignUp')}}"
-{% endblock %}
+{% endblock %} {% block action %}
+action="/checkUserSignUp?create={{isCreateAction}}" {% endblock %}

@@ -14,9 +14,9 @@ APP_KEY = getenv("APP_SECRET_KEY")
 
 myclient = pymongo.MongoClient(
     f"mongodb+srv://{USER_NAME}:{PASSWORD}@{CLIENT}")
-mydb = myclient["mydatabase"]
+mydb = myclient["test"]
 collection_customers = mydb["customers"]
-collection_events = mydb["events"]
+collection_events = mydb["eventdbs"]
 
 
 def parse_json(data):

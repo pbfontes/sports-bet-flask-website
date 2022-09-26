@@ -2,13 +2,11 @@ class User():
     def __init__(self, user_json):
         self.id = str(user_json["_id"])
         self.nome = user_json["nome"]
-        self.cpf = user_json["cpf"]
         self.email = user_json["email"]
         self.telefone = user_json["telefone"]
-        self.usuario = user_json["usuario"]
+        self.instagram = user_json["instagram"]
         self.senha_hash = user_json["senha"]
-        self.saldo = user_json["saldo"]
-        self.eventos_aportados = user_json["eventos-aportados"]
+        self.events = user_json["eventos"]
 
     @staticmethod
     def is_authenticated():
@@ -24,3 +22,6 @@ class User():
 
     def get_id(self):
         return self.id
+
+    def is_admin(self, admin_id):
+        return self.id == admin_id

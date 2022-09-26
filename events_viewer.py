@@ -1,4 +1,4 @@
-from DBconfig import collection_events, parse_json, collection_customers, extract_valid_id
+from DBconfig import collection_events, parse_json, extract_valid_id
 from flask import jsonify
 from bson.objectid import ObjectId
 

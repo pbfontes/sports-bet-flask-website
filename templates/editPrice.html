@@ -1,0 +1,117 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container p-3">
+  <div class="mt-2 mb-4">
+    <h6 class="fw-semibold fs-5">{{event.eventName}}</h6>
+    <small
+      >Aqui você pode editar a os preços do seu evento!<br />O primeiro preço
+      preenchido aparecerá na página da sua festa.</small
+    >
+  </div>
+
+  <div class="row align-items-center">
+    <div class="col-auto">
+      <small>Opções de preço</small>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-outline-primary btn-sm" onclick="adicionarOpcao()">
+        Adicionar
+      </button>
+    </div>
+  </div>
+
+  <form action="/salvar-precos/{{event._id}}" method="post" id="myForm">
+    {% for option in event.priceOptions %}
+    <div class="row mt-3" id="option{{loop.index}}">
+      <div class="col-7">
+        <input
+          type="text"
+          class="form-control guestField"
+          name="option{{loop.index}}"
+          value="{{option.name}}"
+          aria-label="First name"
+        />
+      </div>
+      <div class="col-3">
+        <input
+          type="number"
+          class="form-control guestField"
+          name="price{{loop.index}}"
+          value="{{option.price}}"
+          aria-label="First name"
+        />
+      </div>
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="deleteRow(this)"
+        ></button>
+      </div>
+    </div>
+    {% endfor %}
+  </form>
+
+  <div class="row mt-4 mb-5">
+    <div class="col-12">
+      <div class="d-grid">
+        <button type="submit" form="myForm" class="btn btn-primary">
+          Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var id = Number("{{nPrices}}") + 1;
+
+  function adicionarOpcao() {
+    document.getElementById("myForm").insertAdjacentHTML(
+      "beforeend",
+      `
+    <div class="row mt-3" id="option${id}">
+      <div class="col-7">
+        <input
+          type="text"
+          class="form-control guestField"
+          name="option${id}"
+          aria-label="First name"
+          placeholder="ex: Com bebida"
+        />
+      </div>
+      <div class="col-3">
+        <input
+          type="number"
+          class="form-control guestField"
+          name="price${id}"
+          aria-label="First name"
+          placeholder="30"
+        />
+      </div>
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="deleteRow(this)"
+        ></button>
+      </div>
+    </div>`
+    );
+    id += 1;
+  }
+
+  function deleteRow(elem) {
+    elem.parentElement.parentElement.remove();
+    // numBox -= 1;
+    // document.getElementById("guestCount").innerHTML = numBox - 1;
+  }
+
+  document.getElementById("myForm").onkeypress = function (e) {
+    var key = e.charCode || e.keyCode || 0;
+    if (key == 13) {
+      e.preventDefault();
+    }
+  };
+</script>
+{% endblock %}

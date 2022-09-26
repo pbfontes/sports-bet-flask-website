@@ -1,0 +1,21 @@
+<div class="container">
+
+    <% switch (guestStatus) {
+        case "confirmado": %>
+            <p class="mt-4">Você já confirmou esse evento! Se mudar de ideia, clique no botão abaixo.</p>
+            <%- include('_negative_option_button') %>
+            <% break;
+        case "recusado": %>
+            <p  class="mt-4">Você já recusou esse evento. Se mudar de ideia, converse com o organizador! =)</p>
+            <% break;
+        case "pagamento_em_aberto": %>
+            <%- include('_paymentButtons') %>
+            
+            <% break;
+        default: %>
+            <%- include('_polls') %>
+            <%- include('_paymentButtons') %>
+            <% break;
+    } %>
+    <br><br>
+</div>

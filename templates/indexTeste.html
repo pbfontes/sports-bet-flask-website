@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 14px">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courgette&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    />
+    <title>Vinco</title>
+  </head>
+
+  <body>
+    <nav
+      class="navbar sticky-top shadow-sm"
+      style="background-color: white; opacity: 0.97"
+    >
+      <div class="container-fluid">
+        <span
+          class="navbar-brand mb-0 h1 mx-auto"
+          style="font-family: 'Courgette', cursive; font-size: 2rem"
+          >Vinco &#128526;</span
+        >
+      </div>
+    </nav>
+    <div class="container" style="max-width: 550px" id="mainContainer">
+      <div class="container mt-4">
+        <div class="row align-items-center">
+          <div class="col-4">
+            <img
+              src="/img/lexie.jpeg"
+              alt="event picture"
+              class="rounded-circle"
+              style="width: 100px; height: 100px; object-fit: cover"
+            />
+          </div>
+          <div class="col-7 ms-2">
+            <span class="p-0 m-1">
+              <i class="bi bi-calendar-event me-1"></i>
+              03/09
+            </span>
+
+            <span class="p-0 me-1 ms-2">
+              <i class="bi bi-clock me-1"></i>
+              13:00
+            </span>
+
+            <p class="p-0 m-1">
+              <i class="bi bi-wallet2 me-2"></i>30 reais (15 se não comer carne)
+            </p>
+            <p class="p-0 m-1">
+              <i class="bi bi-geo-alt-fill me-2"></i>Av. Celso Kelly, 487, Barra
+              da Tijuca
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-4">
+        <h1 class="mb-0 pb-0 fw-bold">Churras casa da Amanda</h1>
+        <p class="m-0 fw-light" style="font-size: 0.9rem">
+          Organizado por Amanda Pontes
+        </p>
+        <p class="my-3 lh-sm">
+          Fala galera! <br />
+          Irei fazer um churrasco na minha residência no próximo sábado. As
+          informações importantes estão aqui na página da resenha. <br /><br />
+          - Bebida: cada um leva o que for beber <br />
+          - Namorados(as) estão permitidos, só me avisar no wpp <br />
+          - Venham com seus biquínis e tragam bola de futevôlei (mas lembrem
+          sempre do risco de isolar kkkkk) <br />
+          <br /><strong>Obs:</strong> Minha casa não estará lega!! Portanto, sem
+          drogas <br />
+        </p>
+      </div>
+
+      <div class="container text-center mt-4">
+        <div class="row g-2">
+          <div class="col d-grid">
+            <a
+              role="button"
+              class="btn text-light fw-bold rounded-1 py-2 fs-5"
+              href="/confirmar/<%= event %> "
+              style="
+                background: linear-gradient(
+                  120deg,
+                  #8a2be2 1%,
+                  #b537f2 40%,
+                  #3cb9fc
+                );
+                border: 0px;
+                text-decoration: none;
+              "
+              >Confirmar</a
+            >
+          </div>
+          <div class="col d-grid">
+            <a
+              role="button"
+              class="btn fw-bold rounded-1 py-2 fs-5"
+              href="/recusar/<%= event %>"
+              style="
+                border: solid;
+                border-width: 1.2px;
+                color: #120052;
+                text-decoration: none;
+              "
+              >Recusar</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="container my-4">
+        <div
+          class="accordion accordion-flush shadow"
+          id="accordionFlushExample"
+        >
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne"
+                aria-expanded="false"
+                aria-controls="flush-collapseOne"
+                id="pollResultBtn"
+              >
+                Resultados das enquetes
+              </button>
+            </h2>
+            <div
+              id="flush-collapseOne"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body" id="poll-content">Enquetes</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo"
+                aria-expanded="false"
+                aria-controls="flush-collapseTwo"
+              >
+                Convidados (n)
+              </button>
+            </h2>
+            <div
+              id="flush-collapseTwo"
+              class="accordion-collapse collapse show"
+              aria-labelledby="flush-headingTwo"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                {% for guest in guests %}
+                <li>{{guest.name}}</li>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'include/teste.html' %}
+  </body>
+</html>
