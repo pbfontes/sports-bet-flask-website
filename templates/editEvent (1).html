@@ -157,10 +157,11 @@
             <div class="col-6">
               <small class="p-0 m-1">
                 <input
-                  type="date"
+                  type="text"
                   name="eventDate"
                   class="form-control"
                   value="{{event.date}}"
+                  onfocus="this.type='date'; this.blur(); this.focus()"
                 />
               </small>
             </div>
