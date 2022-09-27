@@ -1,6 +1,6 @@
 from cmath import inf
 import bcrypt
-from flask import Flask, redirect, render_template, request, url_for, abort
+from flask import Flask, redirect, render_template, request, url_for, abort, flash
 from flask_bcrypt import Bcrypt
 from os import urandom
 from json import loads
@@ -464,25 +464,28 @@ def checkUserSignIn():
         user = collection_customers.find_one({"email": email})
         user = parse_json(user)
 
+        isCreateAction = request.args.get('create', default=False, type=bool)
+        isConfirmAction = request.args.get('confirm', default=False, type=bool)
+
         # verifica se o usuario existe na base de dados
         if user:
             if bcrypt.check_password_hash(user["senha"], senha):
                 user = User(user_json=user)
                 login_user(user)
 
-                isCreateAction = request.args.get('create', default=False, type=bool)
                 print(isCreateAction)
                 if isCreateAction:
                     return redirect(url_for('createEvent'))
 
-                isConfirmAction = request.args.get('confirm', default=False, type=bool)
                 if isConfirmAction:
                     event_id = request.args.get('event_id')
                     return redirect(f"/confirmar/{event_id}")
 
                 return redirect(url_for('home'))
-            return redirect("/login")
-        return "nao existe"
+            flash('Email ou senha incorretos')
+            return redirect(f"/login?create={isCreateAction}&confirm={isConfirmAction}")
+        flash('Usuário não encontrado')
+        return redirect(f"/login?create={isCreateAction}&confirm={isConfirmAction}")
     return redirect("/login")
 
 
