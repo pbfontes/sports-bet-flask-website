@@ -482,7 +482,7 @@ def checkUserSignIn():
                     return redirect(f"/confirmar/{event_id}")
 
                 return redirect(url_for('home'))
-            flash('Email ou senha incorretos')
+            flash('Email ou senha incorreto')
             return redirect(f"/login?create={isCreateAction}&confirm={isConfirmAction}")
         flash('Usuário não encontrado')
         return redirect(f"/login?create={isCreateAction}&confirm={isConfirmAction}")
@@ -515,7 +515,7 @@ def checkUserSignUp():
         if insta == '':
             user_data["instagram"] = "Insta não informado"
         else:
-            user_data["instagram"] = insta
+            user_data["instagram"] = f"@{insta}"
         user_data["senha"] = bcrypt.generate_password_hash(
             senha).decode('utf-8')
         user_data["eventos"] = []
