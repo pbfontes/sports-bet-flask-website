@@ -78,13 +78,25 @@
 
         {% endfor %}
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            href="/pagamento"
+            name="pagar"
+            value="sim"
+          >
             Enviar e realizar pagamento
           </button>
         </div>
 
         <div class="d-grid my-2">
-          <button type="submit" class="btn btn-outline-primary">
+          <button
+            type="submit"
+            class="btn btn-outline-primary"
+            href="/"
+            name="pagar"
+            value="nao"
+          >
             Enviar e pagar depois
           </button>
         </div>

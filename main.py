@@ -64,6 +64,11 @@ def event(event_id):
     return render_template("tabs.html", guests=guests, nGuests = len(guests), event_id = event_id, event=event, hasPrice=hasPrice)
 
 
+@ app.route("/pagamento")
+def payment():
+    return render_template("paymentOptions.html")
+
+
 @ app.route("/enquetes/<event_id>")
 def pollVote(event_id):
     event = collection_events.find_one({"_id": ObjectId(event_id)})
@@ -73,12 +78,17 @@ def pollVote(event_id):
 def processPoll(event_id):
 
     polls = request.form.to_dict(flat=True)
+    pagar = polls['pagar']
+    print("olha")
     print(polls)
     for poll in polls.keys():
-        query = {"_id": ObjectId(event_id), "polls.question": poll}
-        newValues = {"$inc": {f"polls.$.options.{int(polls[poll]) - 1 }.numVotes": 1}}
-        collection_events.update_one(query, newValues)
+        if (poll != 'pagar'):
+            query = {"_id": ObjectId(event_id), "polls.question": poll}
+            newValues = {"$inc": {f"polls.$.options.{int(polls[poll]) - 1 }.numVotes": 1}}
+            collection_events.update_one(query, newValues)
     # return "Página de pagamento"
+    if pagar == 'sim':
+        return redirect('/pagamento')
     return redirect(f"/evento/{event_id}")   
 
 
