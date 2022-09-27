@@ -87,7 +87,7 @@
 
                   {% if isConfirmAction == True %}
                   <a
-                    href="/cadastro?confirm=True"
+                    href="/cadastro?confirm=True&event_id={{event_id}}"
                     class="text-primary"
                     style="text-decoration: none"
                   >
@@ -96,7 +96,7 @@
                   {% else %}
 
                   <a
-                    href="{{url_for('signup')}}"
+                    href="/cadastro"
                     class="text-primary"
                     style="text-decoration: none"
                   >

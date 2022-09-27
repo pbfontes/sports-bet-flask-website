@@ -8,7 +8,6 @@ block header %}
   ></a
 >
 {% endblock %} {% block senha %}
-
 <div class="col-md-4">
   <label for="inputPassword" class="form-label">Senha</label>
   <input
@@ -29,5 +28,7 @@ block header %}
     required
   />
 </div>
-{% endblock %} {% block action %}
-action="/checkUserSignUp?create={{isCreateAction}}" {% endblock %}
+{% endblock %} {% block action %} {% if isCreateAction == True %}
+action="/checkUserSignUp?create=True" {% elif isConfirmAction == True %}
+action="/checkUserSignUp?confirm=True&event_id={{event_id}}" {% else %}
+action="/checkUserSignUp" {% endif %} {% endblock %}

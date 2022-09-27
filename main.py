@@ -185,7 +185,9 @@ def polls(event_id):
 @ app.route("/cadastro")
 def signup():
     isCreateAction = request.args.get('create', default=False, type=bool)
-    return render_template("signup.html", isCreateAction=isCreateAction)
+    isConfirmAction = request.args.get('confirm', default=False, type=bool)
+    event_id = request.args.get('event_id')
+    return render_template("signup.html", isCreateAction=isCreateAction, isConfirmAction = isConfirmAction, event_id=event_id)
 
 
 @ app.route("/criar-primeiro-evento")
@@ -499,6 +501,7 @@ def checkUserSignUp():
 
         isCreateAction = request.args.get('create', default=False, type=bool)
         isConfirmAction = request.args.get('confirm', default=False, type=bool)
+        event_id = request.args.get('event_id')
 
         if senha != confirmaSenha:
             return redirect("/cadastro")
@@ -521,7 +524,7 @@ def checkUserSignUp():
         # user = User(user_json=user)
         # login_user(user)
 
-        return render_template("signin.html", isCreateAction=isCreateAction, isConfirmAction=isConfirmAction)
+        return render_template("signin.html", isCreateAction=isCreateAction, isConfirmAction=isConfirmAction, event_id=event_id)
     return redirect("/cadastro")
 
 
