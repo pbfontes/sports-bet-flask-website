@@ -18,21 +18,31 @@
         {% if guest.status == 'recusado' %}
         <option value="convidado">Convidado</option>
         <option value="confirmado">Confirmado</option>
+        <option value="pago">Pago</option>
         <option value="talvez">Talvez</option>
         <option value="recusado" selected>Recusado</option>
         {% elif guest.status == 'confirmado' %}
         <option value="convidado">Convidado</option>
         <option value="confirmado" selected>Confirmado</option>
+        <option value="pago">Pago</option>
         <option value="talvez">Talvez</option>
         <option value="recusado">Recusado</option>
         {% elif guest.status == 'talvez' %}
         <option value="convidado">Convidado</option>
         <option value="confirmado">Confirmado</option>
+        <option value="pago">Pago</option>
         <option value="talvez" selected>Talvez</option>
+        <option value="recusado">Recusado</option>
+        {% elif guest.status == 'pago' %}
+        <option value="convidado">Convidado</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="pago" selected>Pago</option>
+        <option value="talvez">Talvez</option>
         <option value="recusado">Recusado</option>
         {% else %}
         <option value="convidado" selected>Convidado</option>
         <option value="confirmado">Confirmado</option>
+        <option value="pago">Pago</option>
         <option value="talvez">Talvez</option>
         <option value="recusado">Recusado</option>
         {% endif %}
@@ -52,6 +62,7 @@
       <select class="form-select" aria-label="Default select example" name="guest{{nGuests + 1}}">
         <option value="convidado" selected>Convidado</option>
         <option value="confirmado">Confirmado</option>
+        <option value="pago">Pago</option>
         <option value="talvez">Talvez</option>
         <option value="recusado">Recusado</option>
       </select>
@@ -100,6 +111,7 @@
       <select class="form-select" aria-label="Default select example" name="guest${id}">
         <option value="convidado" selected>Convidado</option>
         <option value="confirmado">Confirmado</option>
+        <option value="pago">Pago</option>
         <option value="talvez">Talvez</option>
         <option value="recusado">Recusado</option>
       </select>
