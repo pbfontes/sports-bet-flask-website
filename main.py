@@ -253,15 +253,17 @@ def processEvent(event_id):
         time = request.form.get("eventTime")
         description = request.form.get("eventDescription")
 
-        ano = date[:4]
-        mes = date[5:7]
-        dia = date[8:]
+        if date != '':
+            ano = date[:4]
+            mes = date[5:7]
+            dia = date[8:]
+            date = f"{dia}-{mes}-{ano}"
+            event_data['date'] = date
 
-        date = f"{dia}-{mes}-{ano}"
+        
 
         event_data['address'] = address
         event_data['eventName'] = eventName
-        event_data['date'] = date
         event_data['time'] = time
         event_data['description'] = description
 
