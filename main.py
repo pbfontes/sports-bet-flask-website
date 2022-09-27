@@ -121,12 +121,13 @@ def refuse(event_id):
         event_data = dict()
         nome_lista = request.form.get("nome-com-lista")
         nome_avulso = request.form.get("nome-sem-lista")
+        justi = request.form.get("justificativa")
         if nome_lista == "Selecione seu nome":
             if nome_avulso == '':
                 return redirect(f"/evento/{event_id}/recusar")
             else:
                 # adicionar o nome recusado na lista
-                new_refuse = {"name": nome_avulso, "status": "recusado"}
+                new_refuse = {"name": nome_avulso, "status": "recusado", "justificativa": justi}
                 query = {"_id": ObjectId(event_id)}
                 newValues = {"$push": {"guests": new_refuse}}
                 collection_events.update_one(query, newValues)
@@ -135,7 +136,7 @@ def refuse(event_id):
         else:
             # new_refuse = {"name": nome_avulso, "status": "recusado"}
             query = {"_id": ObjectId(event_id), "guests.name": nome_lista}
-            newValues = {"$set": {"guests.$.status": "recusado"}}
+            newValues = {"$set": {"guests.$.status": "recusado", "guests.$.justificativa": justi}}
             collection_events.update_one(query, newValues)
             return redirect(f"/evento/{event_id}")
     
