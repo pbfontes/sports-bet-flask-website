@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% block content %}
+
+<nav
+  class="navbar sticky-top shadow-sm"
+  style="background-color: white; opacity: 0.97"
+>
+  <div class="container-fluid">
+    <span
+      class="navbar-brand mb-0 h1 mx-auto"
+      style="font-family: 'Courgette', cursive; font-size: 2rem"
+      >Vinco &#128526;</span
+    >
+  </div>
+</nav>
+
+<!-- possivelmenirar acima -->
+
+<div class="container p-3">
+  <h2 class="mt-3">De fato, os rolês são incertos ;)</h2>
+  <p>Selecione o seu nome para o organizador saber da sua situação</p>
+  <form class="mt-3" action="/talvez/{{event_id}}" method="post">
+    <select
+      class="form-select"
+      aria-label="Default select example"
+      name="nome-com-lista"
+    >
+      <option selected>Selecione seu nome</option>
+      {% for guest in guests %}
+      <option value="{{guest.name}}">{{guest.name}}</option>
+      {% endfor %}
+    </select>
+    <p class="mt-4">
+      Não encontrou seu nome? Sem stress! Se identifique abaixo
+    </p>
+    <input
+      type="text"
+      class="form-control"
+      name="nome-sem-lista"
+      placeholder="Seu nome (caso não esteja na lista acima)"
+      aria-label="Username"
+    />
+    <div class="d-grid">
+      <button type="submit" class="btn btn-outline-warning mt-4">
+        Não tenho certeza se vou
+      </button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

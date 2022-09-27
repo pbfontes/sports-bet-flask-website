@@ -94,10 +94,8 @@ def event_action(event_id, action):
         else:
             return render_template("signin.html", isConfirmAction = True, event_id=event_id)
     elif action == 'talvez':
-        if current_user.is_authenticated:
-            return render_template("pollVote.html")
-        else:
-            return render_template("signin.html", isConfirmAction = True)
+        event = collection_events.find_one({"_id": ObjectId(event_id)})
+        return render_template("maybe.html", guests=event["guests"], event_id=event_id)
     elif action == 'recusar':
         event = collection_events.find_one({"_id": ObjectId(event_id)})
         return render_template("refuse4.html", guests=event["guests"], event_id=event_id)
@@ -138,6 +136,37 @@ def refuse(event_id):
             # new_refuse = {"name": nome_avulso, "status": "recusado"}
             query = {"_id": ObjectId(event_id), "guests.name": nome_lista}
             newValues = {"$set": {"guests.$.status": "recusado"}}
+            collection_events.update_one(query, newValues)
+            return redirect(f"/evento/{event_id}")
+    
+    return redirect(f"/evento/{event_id}")
+
+
+
+@ app.route("/talvez/<event_id>", methods=["POST"])
+def maybe(event_id):
+    
+    event = collection_events.find_one({"_id": ObjectId(event_id)})
+
+    if request.method == "POST":
+        event_data = dict()
+        nome_lista = request.form.get("nome-com-lista")
+        nome_avulso = request.form.get("nome-sem-lista")
+        if nome_lista == "Selecione seu nome":
+            if nome_avulso == '':
+                return redirect(f"/evento/{event_id}/talvez")
+            else:
+                # adicionar o nome recusado na lista
+                new_refuse = {"name": nome_avulso, "status": "talvez"}
+                query = {"_id": ObjectId(event_id)}
+                newValues = {"$push": {"guests": new_refuse}}
+                collection_events.update_one(query, newValues)
+                return redirect(f"/evento/{event_id}")
+
+        else:
+            # new_refuse = {"name": nome_avulso, "status": "recusado"}
+            query = {"_id": ObjectId(event_id), "guests.name": nome_lista}
+            newValues = {"$set": {"guests.$.status": "talvez"}}
             collection_events.update_one(query, newValues)
             return redirect(f"/evento/{event_id}")
     
@@ -254,17 +283,40 @@ def processGuests(event_id):
     # se o usuário for admin do evento
     if request.method == "POST":
 
+        event = collection_events.find_one({"_id": ObjectId(event_id)})
+        guests = event["guests"]
+        print(guests)
+        guest_names = list()
+        for guest in guests:
+            guest_names.append(guest["name"])
 
         new_guest_data = request.form.to_dict(flat=False)
-
-        db_guest_data = list()
+        guest_data = list()
+        edit_names = list()
         for guest in new_guest_data.values():
             if guest[0] != '':
-                db_guest_data.append({'name': guest[0], 'status': guest[1]})
+                guest_data.append({'name': guest[0], 'status': guest[1]})
+                edit_names.append(guest[0])
 
-        print(db_guest_data)
 
-        db_guest_data = {"guests": db_guest_data}
+        for guest in guests:
+            if guest["name"] not in edit_names:
+                guests.remove(guest)
+
+
+
+        for guest in guest_data:
+            if guest["name"] in guest_names:
+                # atualizar status
+                for existing in guests:
+                    if existing["name"] == guest["name"]:
+                        existing["status"] = guest["status"]
+            else:
+                guests.append(guest)
+            
+        print(guests)
+
+        db_guest_data = {"guests": guests}
 
         query = {"_id": ObjectId(event_id)}
         newValues = {"$set": db_guest_data}
@@ -313,19 +365,27 @@ def processPrices(event_id):
 
 @ app.route("/process-confirm/<event_id>", methods=["POST"])
 def processConfirm(event_id):
+
+    name = current_user.nome
+    userid = current_user.id
+    instagram = current_user.instagram
+    new_guest = {"name": name, "status": "confirmado", "_id": ObjectId(extract_valid_id(userid)), "instagram": instagram}
+
     info = request.form.to_dict()
+
     if "nome-sem-lista" in info.keys():
-        name = current_user.name
-        id = current_user.id
-        instagram = current_user.instagram
         # adicionar na lista de convidados
+        query = {"_id": ObjectId(event_id)}
+        newValues = {"$push": {"guests": new_guest}}
+        collection_events.update_one(query, newValues)
+
     else:
         # encontrar na lista de convidados e substituir
-        name = current_user.name
-        id = current_user.id
-        instagram = current_user.instagram
+        query = {"_id": ObjectId(event_id), "guests.name": info["nome-com-lista"]}
+        newValues = {"$set": {"guests.$": new_guest}}
+        collection_events.update_one(query, newValues)
     # redirecionar para as enquertes
-    return "oi"
+    return redirect(f"/enquetes/{event_id}")
 
 
 @ app.route("/salvar-enquetes/<event_id>", methods=["POST"])
@@ -446,7 +506,10 @@ def checkUserSignUp():
         user_data["nome"] = nome
         user_data["email"] = email
         user_data["telefone"] = telefone
-        user_data["instagram"] = insta
+        if insta == '':
+            user_data["instagram"] = "Insta não informado"
+        else:
+            user_data["instagram"] = insta
         user_data["senha"] = bcrypt.generate_password_hash(
             senha).decode('utf-8')
         user_data["eventos"] = []
