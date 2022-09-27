@@ -257,8 +257,11 @@ def processEvent(event_id):
             ano = date[:4]
             mes = date[5:7]
             dia = date[8:]
-            date = f"{dia}-{mes}-{ano}"
+            # date = f"{dia}-{mes}-{ano}"
             event_data['date'] = date
+            event_data["dia"] = dia
+            event_data["mes"] = mes
+            event_data["ano"] = ano
 
         
 
